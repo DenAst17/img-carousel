@@ -3,11 +3,9 @@ import MainContent from "./components/MainContent.vue";
 </script>
 
 <template>
-  <main class="jo">
-    <Suspense>
-      <MainContent />
-    </Suspense>
-  </main>
+  <Suspense>
+    <MainContent />
+  </Suspense>
 </template>
 
 <style scoped>

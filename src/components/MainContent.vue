@@ -9,10 +9,6 @@ let images = ref(await getListPage());
 
 console.log(images.value);
 
-window.addEventListener("resize", function () {
-  console.log(window.innerWidth);
-});
-
 const next = function () {
   const first = images.value!.shift();
   images.value = images.value!.concat(first as Image);
@@ -42,8 +38,4 @@ header {
   line-height: 1.5;
 }
 
-.mainContent {
-  display: flex;
-  justify-content: center;
-}
 </style>
