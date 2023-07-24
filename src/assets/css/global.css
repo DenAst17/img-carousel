@@ -1,0 +1,20 @@
+.jo
+{
+    font-family: 'Josefin Sans', sans-serif;
+}
+
+.flex
+{
+    display: flex;
+}
+
+.alignCenter
+{
+    display: flex;
+    align-items: center;
+    text-align: center;
+}
+
+h1{
+    margin: 0px;
+}
