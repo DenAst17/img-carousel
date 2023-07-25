@@ -1,29 +1,53 @@
 <script setup lang="ts">
 
-import { ref } from 'vue';
-import { getListPage } from '../api/courses';
+import { ref, computed } from 'vue';
+import { getListPage } from '../api/images';
 import Carousel from '../components/Carousel.vue';
 import Image from '@/entities/image';
 
 let images = ref(await getListPage());
 
-console.log(images.value);
+const imagesSelected = computed(() => {
+  return (images.value as Image[])
+    .filter(image => image.isSelected)
+    .sort((a, b) => {
+      if (a.id as number > (b.id as number)) {
+        return 1
+      }
+      else if (a.id as number < (b.id as number)) {
+        return -1
+      }
+      else {
+        return 0;
+      }
+    });
+})
 
 const next = function () {
   const first = images.value!.shift();
   images.value = images.value!.concat(first as Image);
-  console.log(images.value);
+  //console.log(images.value);
 }
 const previous = function () {
-  const last = images.value!.pop()
-  images.value = [last as Image].concat(images.value as Image[])
-  console.log(images.value);
+  const last = images.value!.pop();
+  images.value = [last as Image].concat(images.value as Image[]);
+  //console.log(images.value);
+}
+const selectImage = function (imageId: number) {
+  const image = (images.value as Image[]).find(image => imageId == image.id) as Image;
+  image!.isSelected = !image!.isSelected;
 }
 </script>
 
 <template>
   <div class="jo mainContent">
-    <Carousel :images="(images as Array<Image>)" @previousClick="previous" @nextClick="next"/>
+    <Carousel :images="(images as Array<Image>)" @previousClick="previous" @nextClick="next" @imageClick="selectImage" />
+
+    <div class="urlWrapper">
+      <div class="fsize30" v-for="image in imagesSelected">
+        {{ image.url }}
+      </div>
+    </div>
   </div>
 </template>
 
@@ -38,4 +62,13 @@ header {
   line-height: 1.5;
 }
 
+.mainContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.urlWrapper {
+  margin-top: 30px;
+  line-height: 1.5;
+}
 </style>
