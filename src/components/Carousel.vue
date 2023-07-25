@@ -14,7 +14,7 @@ window.addEventListener("resize", function () {
 });
 
 const imagesToShow = computed(() => {
-    let numberOfImages = (windowWidth.value - 100) / 310;
+    let numberOfImages = Math.max((windowWidth.value - 100) / 310, 1);
     return props.images!.slice(0, numberOfImages);
 })
 
@@ -25,8 +25,8 @@ const highlightImages = function () {
         imageElements[i].classList.remove("selected");
     }
     imagesToShow.value.forEach(image => {
-        if(image.isSelected) {
-            const selectedElement = document.getElementById("image"+image.id);
+        if (image.isSelected) {
+            const selectedElement = document.getElementById("image" + image.id);
             selectedElement?.classList.add("selected");
         }
     });
@@ -44,7 +44,7 @@ onUpdated(() => {
         </button>
         <TransitionGroup class='carouselTransition' tag="div" name="carousel">
             <picture v-for="(image, index) in imagesToShow" :key="image.id" class="slide">
-                <img :src="(image.download_url as string)" class="image" :id="`image`+image.id" @click="($event) => {
+                <img :src="(image.download_url as string)" class="image" :id="`image` + image.id" @click="($event) => {
                     $emit('imageClick', image.id)
                     highlightImages();
                 }" />
@@ -61,23 +61,18 @@ onUpdated(() => {
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-between;
 }
 
 .carousel-enter-active {
-  opacity: 0;
-  transform: translateY(100%);
-  transition: all 1s;
+    opacity: 0;
+    transform: translateY(100%);
+    transition: all 1s;
 }
 
 .carousel-enter-to {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.carousel-leave-to {
-  opacity: 0;
-  transform: translateY(100%);
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .slide {
@@ -108,13 +103,9 @@ onUpdated(() => {
 }
 
 @media screen and (max-width: 719px) {
-    .slide {
-        margin: 0px;
-    }
-
     .image {
-        width: auto;
-        height: auto;
+        width: auto !important;
+        height: auto !important;
         max-width: 100%;
         max-height: 100%;
     }

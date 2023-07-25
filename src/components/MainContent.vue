@@ -42,7 +42,7 @@ const selectImage = function (imageId: number) {
     <Carousel :images="(images as Array<Image>)" @previousClick="previous" @nextClick="next" @imageClick="selectImage" />
 
     <TransitionGroup name="list" tag="ul" class="urlWrapper">
-      <div class="fsize30" v-for="image in imagesSelected" :key="image.id">
+      <div v-for="image in imagesSelected" :key="image.id">
         {{ image.url }}
       </div>
     </TransitionGroup>
@@ -69,8 +69,14 @@ header {
   padding: 0px;
   margin-top: 30px;
   line-height: 1.5;
+  font-size: 30px;
 }
 
+@media screen and (max-width: 719px) {
+  .urlWrapper {
+  font-size: 14px;
+}
+}
 .list-enter-active,
 .list-leave-active {
   transition: all 0.5s ease;
