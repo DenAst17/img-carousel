@@ -24,7 +24,6 @@ const highlightImages = function () {
     for (let i = 0; i < imageElements.length; i++) {
         imageElements[i].classList.remove("selected");
     }
-    console.log(imagesToShow.value);
     imagesToShow.value.forEach(image => {
         if(image.isSelected) {
             const selectedElement = document.getElementById("image"+image.id);
@@ -41,19 +40,19 @@ onUpdated(() => {
     <div class="carousel">
         <button class='previous round jo fsize30' @click="($event) => {
             $emit('previousClick')
-        }">&#8592;
+        }">&#8656;
         </button>
-        <transition-group class='carouselTransition' tag="div">
+        <TransitionGroup class='carouselTransition' tag="div" name="carousel">
             <picture v-for="(image, index) in imagesToShow" :key="image.id" class="slide">
                 <img :src="(image.download_url as string)" class="image" :id="`image`+image.id" @click="($event) => {
                     $emit('imageClick', image.id)
                     highlightImages();
                 }" />
             </picture>
-        </transition-group>
+        </TransitionGroup>
         <button class='next round jo fsize30' @click="($event) => {
             $emit('nextClick')
-        }">&#8594;</button>
+        }">&#8658;</button>
     </div>
 </template>
 
@@ -63,6 +62,22 @@ onUpdated(() => {
     flex-direction: row;
     align-items: center;
     justify-content: space-around;
+}
+
+.carousel-enter-active {
+  opacity: 0;
+  transform: translateY(100%);
+  transition: all 1s;
+}
+
+.carousel-enter-to {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.carousel-leave-to {
+  opacity: 0;
+  transform: translateY(100%);
 }
 
 .slide {
@@ -110,7 +125,6 @@ onUpdated(() => {
 }
 
 .image:hover {
-    border-radius: 5px;
     border-color: gray;
     opacity: 0.8;
 }

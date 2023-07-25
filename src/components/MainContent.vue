@@ -26,12 +26,10 @@ const imagesSelected = computed(() => {
 const next = function () {
   const first = images.value!.shift();
   images.value = images.value!.concat(first as Image);
-  //console.log(images.value);
 }
 const previous = function () {
   const last = images.value!.pop();
   images.value = [last as Image].concat(images.value as Image[]);
-  //console.log(images.value);
 }
 const selectImage = function (imageId: number) {
   const image = (images.value as Image[]).find(image => imageId == image.id) as Image;
@@ -43,13 +41,12 @@ const selectImage = function (imageId: number) {
   <div class="jo mainContent">
     <Carousel :images="(images as Array<Image>)" @previousClick="previous" @nextClick="next" @imageClick="selectImage" />
 
-    <div class="urlWrapper">
-      <div class="fsize30" v-for="image in imagesSelected">
+    <TransitionGroup name="list" tag="ul" class="urlWrapper">
+      <div class="fsize30" v-for="image in imagesSelected" :key="image.id">
         {{ image.url }}
       </div>
-    </div>
-  </div>
-</template>
+    </TransitionGroup>
+</div></template>
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital@1&display=swap');
@@ -67,8 +64,20 @@ header {
   flex-direction: column;
   align-items: center;
 }
+
 .urlWrapper {
+  padding: 0px;
   margin-top: 30px;
   line-height: 1.5;
+}
+
+.list-enter-active,
+.list-leave-active {
+  transition: all 0.5s ease;
+}
+.list-enter-from,
+.list-leave-to {
+  opacity: 0;
+  transform: translateX(30px);
 }
 </style>
